@@ -57,7 +57,7 @@ func (p Product) RemoveProduct(id int) {
 			prod = append(prod, item)
 		}
 	}
-
+	// wew
 	// If the item was not found, return an error
 	if !found {
 		log.Println("No ID Found")
