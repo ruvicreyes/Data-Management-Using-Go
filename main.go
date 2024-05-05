@@ -45,6 +45,7 @@ func (p Product) RemoveProduct(id int) {
 	if err != nil {
 		panic(err)
 	}
+
 	var prod []Product
 	// Iterate over the items and remove the item with the specified ID
 	found := false
@@ -122,7 +123,7 @@ func main() {
 	// fmt.Println("Updated Product:", product)
 }
 
-//Next is to list remove product
+//Next is to update product
 
 /* get list of product if == id
 https://stackoverflow.com/questions/34172001/how-to-retrieve-array-of-elements-from-array-of-structure-in-golang */
