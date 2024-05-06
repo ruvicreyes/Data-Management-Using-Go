@@ -1,9 +1,15 @@
 [
     {
+        "ID": 1,
+        "Name": "Laptop",
+        "Price": 1000,
+        "Quantity": 10
+    },
+    {
         "ID": 2,
-        "Name": "Smartphone",
-        "Price": 500,
-        "Quantity": 20
+        "Name": "Updated Smartphone",
+        "Price": 550,
+        "Quantity": 25
     },
     {
         "ID": 3,

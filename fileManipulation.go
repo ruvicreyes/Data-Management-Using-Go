@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"os"
 )
+type writer interface{
+	Write()
+}
 
 func createNewDB(){
 	// Create an empty slice ([]Person{}) to represent the data
@@ -43,6 +46,7 @@ func loadData(filename string) ([]Product, error) {
 
 	jsonData, err := os.ReadFile(filename)
 	if err != nil {
+		createNewDB()
 		return nil, err
 	}
 
@@ -55,13 +59,23 @@ func loadData(filename string) ([]Product, error) {
 }
 
 // Function to check if a person already exists in the slice
-func personExists(product []Product, newProduct Product) bool {
+func personExists(product []Product, newProduct Product) (bool, int) {
 	for _, p := range product {
-		if p.ID == newProduct.ID && p.Name == newProduct.Name && p.Price == newProduct.Price {
-			return true
+		if p.ID == newProduct.ID{
+			return true, newProduct.ID
 		}
 	}
-	return false
+	return false, 0
+}
+
+// Function to check if a person already exists in the slice
+func alreadyUpdated(product []Product, newProduct Product) (bool, int) {
+	for _, p := range product {
+		if p.ID == newProduct.ID && p.Name == newProduct.Name && p.Price == newProduct.Price && p.Quantity == newProduct.Quantity {
+			return true, newProduct.ID
+		}
+	}
+	return false, 0
 }
 
 

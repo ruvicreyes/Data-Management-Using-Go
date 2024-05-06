@@ -7,7 +7,7 @@ import (
 type Storer interface {
 	AddProduct(product *Product)
 	RemoveProduct(id int)
-	//UpdateProduct(id int, product *Product)
+	UpdateProduct(id int, product *Product)
 	//GetProduct(id int) *Product
 	GetAllProducts()
 }
@@ -24,17 +24,16 @@ func (p Product) AddProduct(product *Product) {
 
 	existingData, err := loadData("database.json")
 	if err != nil {
-		log.Print(err, "\n We Create New one called database.json")
-		createNewDB()
+		log.Println(err)
 	}
-	if personExists(existingData, *product) {
+	isPositive, ID := personExists(existingData, *product)
+	if  isPositive{
 		//check if data is already Existing
-		log.Println("Person already exists, not adding.")
+		log.Println("The Product Number:", ID, "already exist")
 
 	} else {
 		//Append the Existing Data to the new Data
 		newData := append(existingData, *product)
-		log.Println(newData)
 		writeData(newData)
 	}
 }
@@ -43,7 +42,7 @@ func (p Product) RemoveProduct(id int) {
 
 	existingData, err := loadData("database.json")
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 
 	var prod []Product
@@ -68,9 +67,40 @@ func (p Product) RemoveProduct(id int) {
 
 }
 
-// func (p Product) updatedProduct(product *Product) {
+func (p Product) UpdateProduct(id int, product *Product) {
+	var prod []Product
+	found := false
+	//load existing data
+	existData, err := loadData("database.json")
+	if err!= nil {
+		log.Println(err)
+	}
+	//Check if the Data is already updated
+	isPositive , _ := alreadyUpdated(existData, *product)
 
-// }
+	if isPositive {
+		log.Println("The Item is already updated")
+	}else{
+
+		// Iterate over the items and remove the item with the specified ID
+		for _, item := range existData {
+			if item.ID == id {
+				log.Println("ID NO:", id, "is completely updated")
+				prod = append(prod, *product)	
+			} else {
+				prod = append(prod, item)
+				found = true
+			}
+		}
+		// If the item was not found, return an error
+		if !found {
+			log.Println("No ID Found")
+		}
+		//Update Database
+		writeData(prod)
+	}
+	
+}
 
 // func (p Product) GetProduct(id int) *Product {
 // 	var list []string
@@ -84,7 +114,7 @@ func (p Product) RemoveProduct(id int) {
 func (p Product) GetAllProducts() {
 	data, err := loadData("database.json")
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 
 	for _, p := range data {
@@ -103,32 +133,34 @@ func main() {
 	inventory := Product{}
 
 	// Add some products
-	// inventory.AddProduct(&Product{ID: 1, Name: "Laptop", Price: 1000, Quantity: 10})
-	// inventory.AddProduct(&Product{ID: 2, Name: "Smartphone", Price: 500, Quantity: 20})
-	// inventory.AddProduct(&Product{ID: 3, Name: "tablet", Price: 1500, Quantity: 20})
+	inventory.AddProduct(&Product{ID: 1, Name: "Laptop", Price: 1000, Quantity: 10})
+	inventory.AddProduct(&Product{ID: 2, Name: "Smartphone", Price: 500, Quantity: 20})
+	inventory.AddProduct(&Product{ID: 3, Name: "tablet", Price: 1500, Quantity: 20})
 
 	// List all products
-	log.Println("All Products:")
+	log.Println("\nAll Products:")
 	inventory.GetAllProducts()
 
 	// // Remove a product
-	inventory.RemoveProduct(1)
+	// inventory.RemoveProduct(1)
 
 	// // Update a product
-	// updatedProduct := &Product{ID: 2, Name: "Updated Smartphone", Price: 550, Quantity: 25}
-	// inventory.UpdateProduct(2, updatedProduct)
+	updatedProduct := &Product{ID: 2, Name: "Updated Smartphone", Price: 550, Quantity: 25}
+	inventory.UpdateProduct(2, updatedProduct)
 
 	// // Get a product by ID
 	// product := inventory.GetProduct(2)
 	// fmt.Println("Updated Product:", product)
 }
 
-//Next is to update product
 
-/* get list of product if == id
-https://stackoverflow.com/questions/34172001/how-to-retrieve-array-of-elements-from-array-of-structure-in-golang */
+// possible additional feature is GORM before learning PostreSQL
 
-// possible if make interface of writing data in Filemanipulation
+
+
+/* possible if make interface of writing data in Filemanipulation
+	Writingfile
+ */
 
 /*
 Benefits of this Project:
