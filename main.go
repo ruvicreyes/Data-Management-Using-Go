@@ -8,7 +8,7 @@ type Storer interface {
 	AddProduct(product *Product)
 	RemoveProduct(id int)
 	UpdateProduct(id int, product *Product)
-	// GetProduct(id int) *Product
+	GetProduct(id int) *Product
 	GetAllProducts()
 }
 
@@ -102,31 +102,27 @@ func (p Product) UpdateProduct(id int, product *Product) {
 	
 }
 
-// func (p Product) GetProduct(id int) *Product {
-// 	var list []string
-
-// 	//load existing data
-// 	existData, err := loadData("database.json")
-// 	if err!= nil {
-// 		log.Println(err)
-// 	}
-//     // Iterate over the items and remove the item with the specified ID
-// 	for _, item := range existData {
-// 		if item.ID == id {
-// 			log.Println("ID NO:", id, "is completely updated")
-// 			prod = append(prod, *product)	
-// 		} else {
-// 			prod = append(prod, item)
-// 			found = true
-// 		}
-// 	}
-// 	// If the item was not found, return an error
-// 	if !found {
-// 		log.Println("No ID Found")
-// 	}
-//     return list
-
-// }
+func (p Product) GetProduct(id int) (*Product, error) {
+	isPositive := false
+	//load existing data
+	existData, err := loadData("database.json")
+	if err!= nil {
+		log.Println(err)
+	}
+    // Iterate over the items and remove the item with the specified ID
+	for _, item := range existData {
+		if item.ID == id {
+			isPositive = true 
+			return &item, err
+		}
+	}
+	// If the item was not found, return an errorv
+	if !isPositive {
+		log.Println("No ID Found")
+		
+	}
+    return nil, err
+}
 
 func (p Product) GetAllProducts() {
 	data, err := loadData("database.json")
@@ -150,9 +146,9 @@ func main() {
 	inventory := Product{}
 
 	// Add some products
-	inventory.AddProduct(&Product{ID: 1, Name: "Laptop", Price: 1000, Quantity: 10})
-	inventory.AddProduct(&Product{ID: 2, Name: "Smartphone", Price: 500, Quantity: 20})
-	inventory.AddProduct(&Product{ID: 3, Name: "tablet", Price: 1500, Quantity: 20})
+	// inventory.AddProduct(&Product{ID: 1, Name: "Laptop", Price: 1000, Quantity: 10})
+	// inventory.AddProduct(&Product{ID: 2, Name: "Smartphone", Price: 500, Quantity: 20})
+	// inventory.AddProduct(&Product{ID: 3, Name: "tablet", Price: 1500, Quantity: 20})
 
 	// List all products
 	log.Println("\nAll Products:")
@@ -162,12 +158,16 @@ func main() {
 	// inventory.RemoveProduct(1)
 
 	// // Update a product
-	updatedProduct := &Product{ID: 2, Name: "Updated Smartphone", Price: 550, Quantity: 25}
-	inventory.UpdateProduct(2, updatedProduct)
+	// updatedProduct := &Product{ID: 2, Name: "Updated Smartphone", Price: 550, Quantity: 25}
+	// inventory.UpdateProduct(2, updatedProduct)
 
 	// // Get a product by ID
-	// product := inventory.GetProduct(2)
-	// fmt.Println("Updated Product:", product)
+	product, err := inventory.GetProduct(3)
+	if product == nil {
+		panic(err)
+	}else{
+		log.Println("Updated Product:", product)
+	}
 }
 
 
