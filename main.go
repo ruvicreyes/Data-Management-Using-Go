@@ -162,7 +162,7 @@ func main() {
 	inventory.UpdateProduct(2, updatedProduct)
 
 	// // Get a product by ID
-	product, err := inventory.GetProduct(2a)
+	product, err := inventory.GetProduct(2)
 	if product == nil {
 		panic(err)
 	} else {
