@@ -8,7 +8,7 @@ type Storer interface {
 	AddProduct(product *Product)
 	RemoveProduct(id int)
 	UpdateProduct(id int, product *Product)
-	//GetProduct(id int) *Product
+	// GetProduct(id int) *Product
 	GetAllProducts()
 }
 
@@ -104,9 +104,26 @@ func (p Product) UpdateProduct(id int, product *Product) {
 
 // func (p Product) GetProduct(id int) *Product {
 // 	var list []string
-//     for _, user := range *Product {
-//         list = append(list, user.UserName)
-//     }
+
+// 	//load existing data
+// 	existData, err := loadData("database.json")
+// 	if err!= nil {
+// 		log.Println(err)
+// 	}
+//     // Iterate over the items and remove the item with the specified ID
+// 	for _, item := range existData {
+// 		if item.ID == id {
+// 			log.Println("ID NO:", id, "is completely updated")
+// 			prod = append(prod, *product)	
+// 		} else {
+// 			prod = append(prod, item)
+// 			found = true
+// 		}
+// 	}
+// 	// If the item was not found, return an error
+// 	if !found {
+// 		log.Println("No ID Found")
+// 	}
 //     return list
 
 // }
