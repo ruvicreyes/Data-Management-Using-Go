@@ -27,7 +27,7 @@ func (p Product) AddProduct(product *Product) {
 		log.Println(err)
 	}
 	isPositive, ID := personExists(existingData, *product)
-	if  isPositive{
+	if isPositive {
 		//check if data is already Existing
 		log.Println("The Product Number:", ID, "already exist")
 
@@ -72,21 +72,21 @@ func (p Product) UpdateProduct(id int, product *Product) {
 	found := false
 	//load existing data
 	existData, err := loadData("database.json")
-	if err!= nil {
+	if err != nil {
 		log.Println(err)
 	}
 	//Check if the Data is already updated
-	isPositive , _ := alreadyUpdated(existData, *product)
+	isPositive, _ := alreadyUpdated(existData, *product)
 
 	if isPositive {
 		log.Println("The Item is already updated")
-	}else{
+	} else {
 
 		// Iterate over the items and remove the item with the specified ID
 		for _, item := range existData {
 			if item.ID == id {
 				log.Println("ID NO:", id, "is completely updated")
-				prod = append(prod, *product)	
+				prod = append(prod, *product)
 			} else {
 				prod = append(prod, item)
 				found = true
@@ -99,29 +99,29 @@ func (p Product) UpdateProduct(id int, product *Product) {
 		//Update Database
 		writeData(prod)
 	}
-	
+
 }
 
 func (p Product) GetProduct(id int) (*Product, error) {
 	isPositive := false
 	//load existing data
 	existData, err := loadData("database.json")
-	if err!= nil {
+	if err != nil {
 		log.Println(err)
 	}
-    // Iterate over the items and remove the item with the specified ID
+	// Iterate over the items and remove the item with the specified ID
 	for _, item := range existData {
 		if item.ID == id {
-			isPositive = true 
+			isPositive = true
 			return &item, err
 		}
 	}
 	// If the item was not found, return an errorv
 	if !isPositive {
 		log.Println("No ID Found")
-		
+
 	}
-    return nil, err
+	return nil, err
 }
 
 func (p Product) GetAllProducts() {
@@ -146,38 +146,35 @@ func main() {
 	inventory := Product{}
 
 	// Add some products
-	// inventory.AddProduct(&Product{ID: 1, Name: "Laptop", Price: 1000, Quantity: 10})
-	// inventory.AddProduct(&Product{ID: 2, Name: "Smartphone", Price: 500, Quantity: 20})
-	// inventory.AddProduct(&Product{ID: 3, Name: "tablet", Price: 1500, Quantity: 20})
+	inventory.AddProduct(&Product{ID: 1, Name: "Laptop", Price: 1000, Quantity: 10})
+	inventory.AddProduct(&Product{ID: 2, Name: "Smartphone", Price: 500, Quantity: 20})
+	inventory.AddProduct(&Product{ID: 3, Name: "tablet", Price: 1500, Quantity: 20})
 
 	// List all products
 	log.Println("\nAll Products:")
 	inventory.GetAllProducts()
 
 	// // Remove a product
-	// inventory.RemoveProduct(1)
+	inventory.RemoveProduct(1)
 
 	// // Update a product
-	// updatedProduct := &Product{ID: 2, Name: "Updated Smartphone", Price: 550, Quantity: 25}
-	// inventory.UpdateProduct(2, updatedProduct)
+	updatedProduct := &Product{ID: 2, Name: "Updated Smartphone", Price: 550, Quantity: 25}
+	inventory.UpdateProduct(2, updatedProduct)
 
 	// // Get a product by ID
-	product, err := inventory.GetProduct(3)
+	product, err := inventory.GetProduct(2a)
 	if product == nil {
 		panic(err)
-	}else{
+	} else {
 		log.Println("Updated Product:", product)
 	}
 }
 
-
 // possible additional feature is GORM before learning PostreSQL
 
-
-
 /* possible if make interface of writing data in Filemanipulation
-	Writingfile
- */
+Writingfile
+*/
 
 /*
 Benefits of this Project:
